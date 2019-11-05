@@ -1,5 +1,4 @@
-var yValue1, yValue2, xValue1, xValue2, cValue, sValue;
-const format = ["M", "C", "L", "KD", "S", "V", "MP", "SD", "A"];
+const format = ["M", "C", "L", "KD", "MP", "S", "V", "SD", "A"];
 
 function bar(){
     var self = this; // for internal d3 functions
@@ -7,7 +6,7 @@ function bar(){
     var barDiv = $("#bar");
     var stackedbarDiv = $("#stackedbar");
 
-    var margin1 = {top: 20, right: 0, bottom: 90, left: 90},
+    var margin1 = {top: 20, right: 20, bottom: 90, left: 90},
         margin2 = {top: 40, right: 30, bottom: 90, left: 25},
         width1 = barDiv.width() - margin1.right - margin1.left,
         height1 = barDiv.height() - margin1.top - margin1.bottom;
@@ -23,8 +22,9 @@ function bar(){
         .attr("class", "tooltip")
         .style("opacity", 0);
 
-    var x1 = d3.scale.linear()
-        .range([0, width1]);
+    var x1 = d3.scale.ordinal()
+        .domain([1994, 1998, 2002, 2006, 2010, 2014, 2018])
+        .rangePoints([0, width1]);
     var x2 = d3.scale.ordinal()
         .rangeRoundBands([0, width2], .1);
 
@@ -42,6 +42,7 @@ function bar(){
 
     var yAxis1 = d3.svg.axis()
         .scale(y1)
+        .tickFormat(d => d + "%")
         .orient("left");
     var yAxis2 = d3.svg.axis()
         .scale(y2)
@@ -82,9 +83,8 @@ function bar(){
               let index1 = data1.findIndex(i => i.KOMMUNNAMN == item.Kommun);
               item.Län = data1[index1].LÄNSNAMN; //missing "län" in data
 
-              console.log(munVotes);
-              item.Riksdagsval = {
-                M: {percent: {
+              item.Riksdagsval = [
+                {percent: {
                   "1994": parseFloat(munVotes[0][1994]),
                   "1998": parseFloat(munVotes[0][1998]),
                   "2002": parseFloat(munVotes[0][2002]),
@@ -93,7 +93,7 @@ function bar(){
                   "2014": parseFloat(munVotes[0][2014]),
                   "2018": parseFloat(munVotes[0][2018])
                 }, color: "#66BEE6", name: "Moderaterna"},
-                C: {percent: {
+                {percent: {
                   "1994": parseFloat(munVotes[1][1994]),
                   "1998": parseFloat(munVotes[1][1998]),
                   "2002": parseFloat(munVotes[1][2002]),
@@ -102,7 +102,7 @@ function bar(){
                   "2014": parseFloat(munVotes[1][2014]),
                   "2018": parseFloat(munVotes[1][2018])
                 }, color: "#63A91D", name: "Centerpartiet"},
-                L: {percent: {
+                {percent: {
                   "1994": parseFloat(munVotes[2][1994]),
                   "1998": parseFloat(munVotes[2][1998]),
                   "2002": parseFloat(munVotes[2][2002]),
@@ -111,7 +111,7 @@ function bar(){
                   "2014": parseFloat(munVotes[2][2014]),
                   "2018": parseFloat(munVotes[2][2018])
                 }, color: "#3399FF", name: "Liberalerna"},
-                KD: {percent: {
+                {percent: {
                   "1994": parseFloat(munVotes[3][1994]),
                   "1998": parseFloat(munVotes[3][1998]),
                   "2002": parseFloat(munVotes[3][2002]),
@@ -120,7 +120,7 @@ function bar(){
                   "2014": parseFloat(munVotes[3][2014]),
                   "2018": parseFloat(munVotes[3][2018])
                 }, color: "#1B5CB1", name: "Kristdemokraterna"},
-                MP: {percent: {
+                {percent: {
                   "1994": parseFloat(munVotes[4][1994]),
                   "1998": parseFloat(munVotes[4][1998]),
                   "2002": parseFloat(munVotes[4][2002]),
@@ -129,7 +129,7 @@ function bar(){
                   "2014": parseFloat(munVotes[4][2014]),
                   "2018": parseFloat(munVotes[4][2018])
                 }, color: "#008000", name: "Miljöpartiet"},
-                S: {percent: {
+                {percent: {
                   "1994": parseFloat(munVotes[5][1994]),
                   "1998": parseFloat(munVotes[5][1998]),
                   "2002": parseFloat(munVotes[5][2002]),
@@ -138,7 +138,7 @@ function bar(){
                   "2014": parseFloat(munVotes[5][2014]),
                   "2018": parseFloat(munVotes[5][2018])
                 }, color: "#FF0000", name: "Socialdemokraterna"},
-                V: {percent: {
+                {percent: {
                   "1994": parseFloat(munVotes[6][1994]),
                   "1998": parseFloat(munVotes[6][1998]),
                   "2002": parseFloat(munVotes[6][2002]),
@@ -147,7 +147,7 @@ function bar(){
                   "2014": parseFloat(munVotes[6][2014]),
                   "2018": parseFloat(munVotes[6][2018])
                 }, color: "#C40000", name: "Vänsterpartiet"},
-                SD: {percent: {
+                {percent: {
                   "1994": parseFloat(munVotes[7][1994]),
                   "1998": parseFloat(munVotes[7][1998]),
                   "2002": parseFloat(munVotes[7][2002]),
@@ -156,7 +156,7 @@ function bar(){
                   "2014": parseFloat(munVotes[7][2014]),
                   "2018": parseFloat(munVotes[7][2018])
                 }, color: "#4E83A3", name: "Sverigedemokraterna"},
-                A: {percent: {
+                {percent: {
                   "1994": parseFloat(munVotes[8][1994]),
                   "1998": parseFloat(munVotes[8][1998]),
                   "2002": parseFloat(munVotes[8][2002]),
@@ -165,7 +165,7 @@ function bar(){
                   "2014": parseFloat(munVotes[8][2014]),
                   "2018": parseFloat(munVotes[8][2018])
                 }, color: "#ccc", name: "Annat"}
-              };
+              ];
 
               /*--------- Inserting immigrant data ------------*/
               let index2 = data2.findIndex(i => i.Kommun.toLowerCase() == item.Kommun.toLowerCase());
@@ -178,28 +178,40 @@ function bar(){
             self.data = data;
             console.log("data", data);
 
-            //define the domain of the bar graph
-            x1.domain(d3.extent(self.data, function(d) { return d[xValue]; })).nice();
-            y1.domain(d3.extent(self.data, function(d) { return d[yValue]; })).nice();
-
-            yValue1 = "Kommunal skattesats";
-            yValue2 = "Folkmängd";
-
-            xValue1 = "Medelvärde förvärvsinkomst";
-            xValue2 = "Kommun";
-
-            cValue1 = "Kommun";
-            sValue1 = "Folkmängd";
+            drawStackedBar();
+            drawBar();
           });
         });
       });
     });
 
-    function drawBar(xValue,yValue,cValue,sValue,mid = null,party = null) {
+    function drawBar(kommunnamn = "Danderyd") {
         //flush old graph
         svg1.selectAll(".bar").remove();
+        svg1.selectAll(".line").remove();
+        svg1.selectAll(".axis").remove();
 
-        let regionToDraw = self.data.filter( x => x.Kommunkod === mid);
+        let regionToDraw = self.data.find( x => x.Kommun === kommunnamn);
+
+        let max = 0;
+        let dataFormat = regionToDraw.Riksdagsval.map((d) => {
+          let arr = [];
+          for(let k = 1994; k <= 2018; k+=4) {
+            if(k === 2018) {
+              arr.push({x1: k, x2: k, y1: isNaN(d.percent[k]) ? 0 : d.percent[k], y2: isNaN(d.percent[k]) ? 0 : d.percent[k], color: d.color, name: d.name});
+            }
+            else {
+              arr.push({x1: k, x2: k+4, y1: isNaN(d.percent[k]) ? 0 : d.percent[k], y2: isNaN(d.percent[k+4]) ? 0 : d.percent[k+4], color: d.color, name: d.name});
+            }
+            if(d.percent[k] > max) {
+              max = d.percent[k];
+            }
+          }
+          return arr;
+        });
+
+        y1.domain([0, max])
+          .nice();
 
         // Add x axis and title.
         svg1.append("g")
@@ -208,9 +220,10 @@ function bar(){
             .call(xAxis1)
             .append("text")
             .attr("class", "label")
-            .attr("x", width1/2 - 50)
-            .attr("y", 60)
-            .text("År");
+            .attr("x", width1/2)
+            .attr("y", 40)
+            .style("text-anchor", "middle")
+            .text("Rösttrend i " + kommunnamn);
 
         // Add y axis and title.
         svg1.append("g")
@@ -218,44 +231,58 @@ function bar(){
             .call(yAxis1)
             .append("text")
             .attr("class", "label")
-            .attr("y", -80)
-            .attr("x", -height1/2 - 60)
+            .attr("y", -60)
+            .attr("x", -height1/2)
             .attr("transform", "rotate(-90)")
             .attr("dy", ".71em")
-            .text("Andel röster i riksdagsvalet för " +  + " i " + regionToDraw.Kommunkod);
+            .style("text-anchor", "middle")
+            .text("Andel röster i riksdagsvalet");
 
-        // Add the scatter dots.
-        svg1.selectAll(".bar")
-            .data(regionToDraw)
-            .enter().append("line")
+        // Add the lines.
+        var layer = svg1.selectAll(".bar")
+            .data(dataFormat)
+            .enter().append("g")
             .attr("class", "bar")
-            .attr("x1", function(d) { return (d[sValue]/5000); })//task size normalize
-            .attr("x2", function(d) { return (d[sValue]/5000); })//task size normalize
-            .attr("y1", function(d) { return x1(d[xValue]); })
-            .attr("y2", function(d) { return y1(d[yValue]); })
-            .style("stroke", "#000")
+            .style("cursor", "pointer");
+
+        layer.selectAll(".lines")
+            .data(function(d) { return d; })
+            .enter().append("line")
+            .attr("class", "line")
+            .attr("x1", function(d) { return x1(d.x1); })//task size normalize
+            .attr("x2", function(d) { return x1(d.x2); })//task size normalize
+            .attr("y1", function(d) { return y1(d.y1); })
+            .attr("y2", function(d) { return y1(d.y2); })
+            .style("stroke", function(d) { return d.color; })
             .style("stroke-width", "2");
-            // //tooltip
-            // .on("mousemove", function(d) {
-            //     tooltip1.transition()
-            //         .duration(200)
-            //         .style("opacity", .9);
-            //     var mouse = d3.mouse(svg1.node()).map( function(d) { return parseInt(d); } );
-            //     tooltip1
-            //         .attr("style", "left:"+(mouse[0]+30)+"px;top:"+(mouse[1]+30)+"px")
-            //         .html(d[cValue]);
-            // })
-            // .on("mouseout", function(d) {
-            //     tooltip1.transition()
-            //         .duration(500)
-            //         .style("opacity", 0);
-            // })
-            // .on("click",  function(d) {
-            //     selFeature(d);
-            // });
+
+        layer.selectAll("myCircles")
+                .data(function(d) { return d; })
+                .enter().append("circle")
+                .attr("fill", "red")
+                .attr("stroke", "none")
+                .attr("cx", function(d) { return x1(d.x1) })
+                .attr("cy", function(d) { return y1(d.y1) })
+                .attr("r", 4)
+                .style("fill", function(d) { return d.color; })
+                //tooltip
+                .on("mousemove", function(d) {
+                    tooltip1.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    var mouse = d3.mouse(svg1.node()).map( function(d) { return parseInt(d); } );
+                    tooltip1
+                        .attr("style", "left:"+(mouse[0]+30)+"px;top:"+(mouse[1]+30)+"px")
+                        .html(d.name + " | " + d.y1 + "%");
+                })
+                .on("mouseout", function(d) {
+                    tooltip1.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
     }
 
-    function drawStackedBar(xValue,yValue,cValue,sValue,cid = null) {
+    function drawStackedBar(cid = 1) {
         //flush old graph
         svg2.selectAll(".stack").remove();
         svg2.selectAll(".axis").remove();
@@ -265,8 +292,7 @@ function bar(){
         //define the domain of the stacked bar graph
         var dataIntermediate = format.map((item, i) => {
           return regionToDraw.map((d) => {
-            d
-            return {x: d.Kommun, y: Math.round(d.Riksdagsval[format[i]].percent[2018] * 10) / 10, color: d.Riksdagsval[format[i]].color, party: item, name: d.Riksdagsval[format[i]].name};
+            return {x: d.Kommun, y: Math.round(d.Riksdagsval[i].percent[2018] * 10) / 10, color: d.Riksdagsval[i].color, party: item, name: d.Riksdagsval[i].name};
           });
         });
 
@@ -291,7 +317,7 @@ function bar(){
             .call(xAxis2)
             .append("text")
             .attr("x", width2/2)
-            .attr("y", -height2 + 10)
+            .attr("y", -height2 - 20)
             .attr("dy", ".71em")
             .style("text-anchor", "middle")
             .style("font-size", "20px")
@@ -308,7 +334,8 @@ function bar(){
         var layer = svg2.selectAll(".stack")
             .data(dataStackLayout)
             .enter().append("g")
-            .attr("class", "stack");
+            .attr("class", "stack")
+            .style("cursor", "pointer");
 
         layer.selectAll(".stackedbar")
             .data(function (d) { return d; })
@@ -334,6 +361,9 @@ function bar(){
                 tooltip2.transition()
                     .duration(500)
                     .style("opacity", 0);
+            })
+            .on("click", function(d) {
+                drawBar(d.x);
             });
 
         layer.selectAll(".text")
@@ -345,7 +375,6 @@ function bar(){
           .style("text-anchor", "middle")
           .style("font-size", "10px")
           .style("user-select", "none")
-          .style("cursor", "context-menu")
           .style("color", "#fff")
       	  .html(function(d) { return d.y + "%"; })
           //tooltip
@@ -362,22 +391,25 @@ function bar(){
               tooltip2.transition()
                   .duration(500)
                   .style("opacity", 0);
+          })
+          .on("click", function(d) {
+              drawBar(d.x);
           });
     }
 
     //method for selecting the dot from other components
     this.selectDot = function(value) {
-        var cid = self.data.find(i  => i.Län === value).Länskod;
+        var county = self.data.find(i  => i.Län === value);
 
-        drawBar(xValue1,yValue1,cValue,sValue,cid);
-        drawStackedBar(xValue2,yValue2,cValue,sValue,cid);
+        drawBar(county.Kommun);
+        drawStackedBar(county.Länskod);
 
         var dt1 = d3.select("#bar");
         dt1.selectAll(".bar")
-            .style("stroke", (d) => d["Länskod"] == cid ? null : "#fff" );
+            .style("stroke", (d) => d["Länskod"] == county.Länskod ? null : "#fff" );
 
         var dt2 = d3.select("#stackedbar");
         dt2.selectAll(".stackedbar")
-            .style("stroke", (d) => d["Länskod"] == cid ? null : "#fff");
+            .style("stroke", (d) => d["Länskod"] == county.Länskod ? null : "#fff");
     };
 }

@@ -18,8 +18,8 @@ function map(){
         .style("opacity", 0);
 
     var projection = d3.geo.mercator()
-        .center([20, 64])
-        .scale(1100);
+        .center([20, 61])
+        .scale(700);
     var svg = d3.select("#map").append("svg")
         .attr("width", width)
         .attr("height", height)
