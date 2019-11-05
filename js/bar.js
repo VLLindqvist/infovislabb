@@ -82,6 +82,7 @@ function bar(){
               let index1 = data1.findIndex(i => i.KOMMUNNAMN == item.Kommun);
               item.Län = data1[index1].LÄNSNAMN; //missing "län" in data
 
+              console.log(munVotes);
               item.Riksdagsval = {
                 M: {percent: {
                   "1994": parseFloat(munVotes[0][1994]),
@@ -119,7 +120,7 @@ function bar(){
                   "2014": parseFloat(munVotes[3][2014]),
                   "2018": parseFloat(munVotes[3][2018])
                 }, color: "#1B5CB1", name: "Kristdemokraterna"},
-                S: {percent: {
+                MP: {percent: {
                   "1994": parseFloat(munVotes[4][1994]),
                   "1998": parseFloat(munVotes[4][1998]),
                   "2002": parseFloat(munVotes[4][2002]),
@@ -127,8 +128,8 @@ function bar(){
                   "2010": parseFloat(munVotes[4][2010]),
                   "2014": parseFloat(munVotes[4][2014]),
                   "2018": parseFloat(munVotes[4][2018])
-                }, color: "#FF0000", name: "Socialdemokraterna"},
-                V: {percent: {
+                }, color: "#008000", name: "Miljöpartiet"},
+                S: {percent: {
                   "1994": parseFloat(munVotes[5][1994]),
                   "1998": parseFloat(munVotes[5][1998]),
                   "2002": parseFloat(munVotes[5][2002]),
@@ -136,8 +137,8 @@ function bar(){
                   "2010": parseFloat(munVotes[5][2010]),
                   "2014": parseFloat(munVotes[5][2014]),
                   "2018": parseFloat(munVotes[5][2018])
-                }, color: "#C40000", name: "Vänsterpartiet"},
-                MP: {percent: {
+                }, color: "#FF0000", name: "Socialdemokraterna"},
+                V: {percent: {
                   "1994": parseFloat(munVotes[6][1994]),
                   "1998": parseFloat(munVotes[6][1998]),
                   "2002": parseFloat(munVotes[6][2002]),
@@ -145,7 +146,7 @@ function bar(){
                   "2010": parseFloat(munVotes[6][2010]),
                   "2014": parseFloat(munVotes[6][2014]),
                   "2018": parseFloat(munVotes[6][2018])
-                }, color: "#008000", name: "Miljöpartiet"},
+                }, color: "#C40000", name: "Vänsterpartiet"},
                 SD: {percent: {
                   "1994": parseFloat(munVotes[7][1994]),
                   "1998": parseFloat(munVotes[7][1998]),
@@ -167,7 +168,6 @@ function bar(){
               };
 
               /*--------- Inserting immigrant data ------------*/
-
               let index2 = data2.findIndex(i => i.Kommun.toLowerCase() == item.Kommun.toLowerCase());
               //console.log(index3);
               if(index2 != -1) {
@@ -176,6 +176,7 @@ function bar(){
             });
 
             self.data = data;
+            console.log("data", data);
 
             //define the domain of the bar graph
             x1.domain(d3.extent(self.data, function(d) { return d[xValue]; })).nice();
