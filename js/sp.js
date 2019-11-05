@@ -1,27 +1,3 @@
-// var t = [
-// { name: "Stockholm", Länskod: 1},
-// { name: "Uppsala", Länskod: 3},
-// { name: "Södermanland", Länskod: 4},
-// { name: "Östergötland", Länskod: 5},
-// { name: "Jönköping", Länskod: 6},
-// { name: "Kronoberg", Länskod: 7},
-// { name: "Kalmar", Länskod: 8},
-// { name: "Gotland", Länskod: 9},
-// { name: "Blekinge", Länskod: 10},
-// { name: "Skåne", Länskod: 12},
-// { name: "Halland", Länskod: 13},
-// { name: "Västra Götaland", Länskod: 14},
-// { name: "Värmland", Länskod: 17},
-// { name: "Örebro", Länskod: 18},
-// { name: "Västmanland", Länskod: 19},
-// { name: "Dalarna", Länskod: 20},
-// { name: "Gävleborg", Länskod: 21},
-// { name: "Västernorrland", Länskod: 22},
-// { name: "Jämtland", Länskod: 23},
-// { name: "Västerbotten", Länskod: 24},
-// { name: "Norrbotten", Länskod: 25},
-// ];
-
 var yValue = "Kommunal skattesats";
 var xValue = "Medelvärde förvärvsinkomst";
 var cValue = "Kommun";

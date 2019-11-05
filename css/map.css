@@ -1,3 +1,9 @@
+#map {
+  border: 2px solid #333333;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
 .country{ fill: rgb(0, 75, 151); }
 
 .country:hover{
@@ -23,4 +29,3 @@ div.tooltip {
     opacity: 0.9;
     position: absolute;
 }
-

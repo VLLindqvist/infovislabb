@@ -6,7 +6,7 @@ function map(){
 
     var mapDiv = $("#map");
 
-    var margin = {top: 10, right: 10, bottom: -1000, left: 10},
+    var margin = {top: 0, right: 0, bottom: 0, left: 0},
         width = mapDiv.width() - margin.right - margin.left,
         height = mapDiv.height() - margin.top - margin.bottom;
     //initialize color scale
@@ -18,8 +18,8 @@ function map(){
         .style("opacity", 0);
 
     var projection = d3.geo.mercator()
-        .center([30, 65])
-        .scale(1200);
+        .center([20, 64])
+        .scale(1100);
     var svg = d3.select("#map").append("svg")
         .attr("width", width)
         .attr("height", height)
@@ -67,6 +67,7 @@ function map(){
             //.style("fill", function(d) { return color(d.properties.name); }) // task color
             //return color(d[cValue])
             .style("fill", function(d) { return cc[d.properties.NAME_1]; }) // task color
+            .style("cursor", "pointer")
             //tooltip
             .on("mousemove", function(d) {
                 tooltip.transition()
@@ -74,8 +75,8 @@ function map(){
                     .style("opacity", .9);
                 var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
                 tooltip
-                .attr("style", "left:"+(mouse[0]+30)+"px;top:"+(mouse[1]+30)+"px")
-                .html(d.properties.NAME_1);
+                  .attr("style", "left:"+(mouse[0]+30)+"px;top:"+(mouse[1]+30)+"px")
+                  .html(d.properties.NAME_1);
             })
             .on("mouseout",  function(d) {
                 tooltip.transition()
@@ -84,7 +85,7 @@ function map(){
             })
             //selection
             .on("click",  function(d) {
-                selFeature(d);s
+                selFeature(d);
             });
     }
 
@@ -99,6 +100,6 @@ function map(){
 
     //method for selecting features of other components
     function selFeature(value){
-        sp1.selectDot(value.properties.NAME_1);
+        bar.selectDot(value.properties.NAME_1);
     }
 }
